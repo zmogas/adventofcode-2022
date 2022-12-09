@@ -92,7 +92,7 @@ const needed = 30000000;
 const currentUnused = total - dirs["/"].size;
 const toFree = needed - currentUnused;
 
-console.log({ currentUnused, toFree });
+// console.log({ currentUnused, toFree });
 
 const sizes = [];
 Object.values(dirs).map((dir) => {
@@ -100,7 +100,7 @@ Object.values(dirs).map((dir) => {
 });
 
 const sorted = sizes.sort((a, b) => a - b);
-console.log(sorted);
+// console.log(sorted);
 
 let answer2 = 0;
 
