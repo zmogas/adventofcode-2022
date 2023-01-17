@@ -47,8 +47,14 @@ let graph = {};
 // console.log("a:", graph["a"]);
 // Object.assign(graph, { a: { ...graph["a"], c: 2 } });
 
+const startingPoints = [];
+
 for (y = 0; y < grid.length; y++) {
   for (x = 0; x < grid[y].length; x++) {
+    // Start from 'a', but valid path we can get only from x=0. because b is only in x=1
+    if (grid[y][x] === "a" && x === 0) {
+      startingPoints.push(`${x}-${y}`);
+    }
     const current = grid[y][x].charCodeAt(0) + 1;
     const pos = `${x}-${y}`;
     // Left
@@ -251,7 +257,9 @@ const findShortestPath = (graph, startNode, endNode) => {
 
     if (Object.keys(distances).length > maxDistLen) {
       maxDistLen = Object.keys(distances).length;
-      console.log(new Date(), "shortest dist:", maxDistLen);
+      if (maxDistLen % 1000 === 0) {
+        console.log(new Date(), "shortest dist:", maxDistLen);
+      }
     }
   }
 
@@ -275,10 +283,18 @@ const findShortestPath = (graph, startNode, endNode) => {
 };
 
 // dijkstra(graph, `${startX}-${startY}`, `${endX}-${endY}`);
-const shortest = findShortestPath(
-  graph,
-  `${startX}-${startY}`,
-  `${endX}-${endY}`
-);
 
-console.log({ shortest });
+const steps = [];
+startingPoints.map((start) => {
+  const shortest = findShortestPath(graph, start, `${endX}-${endY}`);
+
+  console.log(start, shortest.distance);
+  if (shortest.distance !== "Infinity") {
+    steps.push(shortest.distance);
+  }
+});
+
+steps.sort((a, b) => a - b);
+console.log({ steps });
+
+console.log("Answer2:", steps[0]);
